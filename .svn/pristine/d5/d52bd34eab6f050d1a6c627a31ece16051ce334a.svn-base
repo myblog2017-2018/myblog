@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models
+
+# Create your models here.
+from django.db import models
+
+# Create your models here.
+class Band1(models.Model):
+    """A model of a rock band."""
+    name1 = models.CharField(max_length=200)
+    can_rock1 = models.BooleanField(default=True)
+
+
+class Member1(models.Model):
+    """A model of a rock band member."""
+    name1 = models.CharField("Member's name", max_length=200)
+    instrument1 = models.CharField(choices=(
+            ('g', "Guitar"),
+            ('b', "Bass"),
+            ('d', "Drums"),
+        ),
+        max_length=1
+    )
+    band = models.ForeignKey("Band1")

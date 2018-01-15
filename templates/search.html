@@ -1,0 +1,132 @@
+{% extends 'nav.html' %}
+{% load staticfiles %} 
+{% block title %}
+<title>搜索</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="#">主页</a></li>
+<li class="active">搜索</li>
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default" >
+        <div class="panel-body">                                    
+            <div class="row stacked">
+                <div class="col-md-8">
+					<form class="form-horizontal">
+						<div class="input-group push-down-10">
+							<span class="input-group-addon"><span class="fa fa-search"></span></span>
+							<input  type="text" name="keyword" class="form-control" placeholder="关键字..."{% if keyword %} value= '{{keyword}}' {%endif%}/>
+							<div class="input-group-btn push-down-10">
+								<button name="type" value="content" class="btn btn-success active"><span class="fa fa-globe"></span>全文</button>
+							</div>
+							<div class="input-group-btn push-down-10">
+								<button name="type" value="title" class="btn btn-success"><span class="fa fa-globe"></span>标题</button>
+							</div>
+							<div class="input-group-btn push-down-10">
+								<button name="type" value="catagory" class="btn btn-success"><span class="fa fa-sort"></span>分类</button>
+							</div>
+							<div class="input-group-btn push-down-10">
+								<button name="type" value="tag" class="btn btn-success"><span class="fa fa-tags"></span>标签</button>
+							</div>
+							<div class="input-group-btn push-down-10">
+								<button name="type" value="author" class="btn btn-success"><span class="fa fa-user"></span>作者</button>
+							</div>	
+						</div>
+						{%if not keyword %}
+						{% else %}
+						<span class="line-height-30">Search Results for <strong>{{keyword}}</strong><code>({{ num}} results)</code>in  <code>{{searchtime}}</code>  ms</span>
+						{% endif %}
+					</form>
+                </div>
+            </div>
+        </div>                                                                
+    </div>
+    <div class="search-results" id="result">
+	{%if not keyword %}
+	{% else %}
+	{% for i in blog %}
+        <div class="sr-item">
+            <a href="/list/blog&id={{ i.id }}" class="sr-item-title">{{ i.title }}</a>
+            <!--<div class="sr-item-link">/list/blog&id={{ i.id }}</div>-->
+            <p>{{ i.content|truncatechars_html:100|safe }}</p>
+            <p class="sr-item-links"><a href="/list/blog&id={{ i.id }}">link to this page</a> -- <a href="#">author：{{i.author}}</a> -- <a href="#">create at {{i.created}}</a></p>
+        </div>
+	{% empty %}
+		<div class="page-content-wrap">	
+			<div class="row">
+				<div class="col-md-12">	
+					<div class="error-container">
+						<div class="error-text"><span class="fa fa-warning"></span>    Sorry,没有您想要的内容!</div>
+					</div>	
+				</div>
+			</div>																	
+		</div> 
+    {% endfor %}
+	{% endif %}                             
+    </div>
+    <ul class="pagination pagination-sm pull-right push-down-20" id="pager">
+        {% if blog.has_previous %}
+            {% ifequal type 'content' %}
+            <li class="previous"><a href="/list/search?keyword={{keyword}}&type=content&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'title' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=title&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'catagory' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=catagory&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'tag' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=tag&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'author' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=author&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+        {% else %}
+            <li class="previous disabled"><a href="#">上一页</a></li>
+        {% endif %}
+        {% if blog.has_next %}
+			{% ifequal type 'content' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=content&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'title' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=title&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'catagory' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=catagory&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'tag' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=tag&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'author' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=author&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+        {% else %}
+            <li class="next disabled"><a href="#">下一页</a></li>
+        {% endif %}
+    </ul> 
+{% endblock%}
+{% block javascript %}
+<script type="text/javascript">
+//关键字变色
+ function keyLight(id,key){
+   var oDiv = document.getElementById(id),
+       sText = oDiv.innerHTML,
+	   sKey = "<span class='label label-danger'>"+key+"</span>",
+       num = -1,
+       rStr = new RegExp(key, "g"),
+       rHtml = new RegExp("\<.*?\>","ig"),
+       aHtml = sText.match(rHtml); 
+   sText = sText.replace(rHtml, '{~}');
+   sText = sText.replace(rStr,sKey);
+   sText = sText.replace(/{~}/g,function(){
+     num++;
+     return aHtml[num];
+   });
+ 
+   oDiv.innerHTML = sText;
+ } 
+ var key = keyLight('result', '{{keyword}}')
+</script>
+{% endblock %}

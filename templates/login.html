@@ -1,0 +1,260 @@
+{% extends 'base_login.html' %}
+{% load staticfiles %}  
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+    <head>        
+        {% block title %}<title>欢迎登陆</title>{% endblock %}            
+    </head>
+    <body>
+		{% block login %}
+		<div class="login-container">        
+            <div class="login-box animated fadeInDown">
+                <div class="login-body">
+                    <div class="login-title"><strong>输入账号密码</strong></div>
+                    <form id="LoginForm" class="form-horizontal"  accept-charset="UTF-8" method="POST">
+                    <div class="form-group">
+                        <div class="col-md-12">
+							<input type="text" name="username" class="form-control" placeholder="Username"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="password" name="password" class="form-control" placeholder="Password"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button id="login_button" class="btn btn-info pull-right">登录</button>
+                        </div>
+                    </div>
+                    <div class="login-subtitle">
+                        还没有账号? 
+						<a href="#"  data-toggle="modal" data-target="#regist">注册</a>
+                    </div>
+                    <div class="login-subtitle">
+                        忘记了密码? 
+						<a href="#"  data-toggle="modal" data-target="#findback">找回</a>
+                    </div>
+                    </form>
+                </div>
+				{% include "foot.html" %}
+            </div>
+            
+        </div>
+		{% endblock %}	
+		{% block regist %}
+		<div class="modal" id="regist" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="defModalHead"><strong>注册</strong></h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" id="registerForm" accept-charset="UTF-8" >                                                                                             
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">账号</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input onpaste="return false" ondragenter="return false"  style="ime-mode:disabled" type="text" id="username" name="username" class="form-control" required />
+									</div>                                            
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">密码</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="password" id="password" name="password" class="form-control" required />
+									</div>                                            
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">确认</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="password" id="password1" name="password1" class="form-control" required />
+									</div>                                            
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">昵称</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="text" id="nickname" name="nickname" class="form-control" required />
+									</div>                                            
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">邮箱</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="text" id="email" name="email" class="form-control" placeholder="E-mail" required />
+									</div>                                            
+								</div>
+							</div> 								
+						</form>
+						<div class="modal-footer">
+							<button type="button" id="btnregister" class="btn btn-info">提交</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+		{% endblock %}
+		{% block findback %}
+		<div class="modal" id="findback" tabindex="-1" role="dialog" aria-labelledby="defModalHead" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="defModalHead"><strong>找回密码</strong></h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" id="forgetForm" accept-charset="UTF-8" >                                                                                             
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">用户</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="text" id="username" name="username" class="form-control" required />
+									</div>                                            
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 col-xs-12 control-label">邮箱</label>
+								<div class="col-md-6 col-xs-12">                                            
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+										<input type="text" id="email" name="email" class="form-control" placeholder="E-mail" required />
+									</div>                                            
+								</div>
+							</div> 								
+						</form>
+						<div class="modal-footer">
+							<button type="button" id="btnforget" class="btn btn-info">发送找回邮件</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endblock %}
+		{% block javascript %}
+<script type="text/javascript">
+//登录
+var login_button = document.querySelector("#login_button");
+login_button.addEventListener('click', function(event) {
+    event.preventDefault();
+		$.ajax({
+			cache: true,
+			type : 'POST',
+			url : 'login_post', 
+			data: $('#LoginForm').serialize(),
+			async: false,
+			error: function(jqXHR, textStatus, errorThrown) {
+				if (jqXHR.status == 500){
+				noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+				};
+			},
+			success : function (data) {
+				console.log("hello");
+				location.href = "/list/listblog/?type=all";
+			},
+		});
+    });
+</script> 
+<script type="text/javascript">
+//注册
+var btnregister = document.querySelector("#btnregister");
+btnregister.addEventListener('click', function(event) {
+    event.preventDefault();
+    noty({
+        text: '确定提交?',
+        layout: 'center',
+            buttons: [
+            {
+                addClass: 'btn btn-success btn-clean',
+                text: '确定',
+                onClick: function($noty) {
+					$noty.close();
+					$.ajax({
+						cache: true,
+						type : 'POST',
+						url : 'regist_post',
+						data : $('#registerForm').serialize(),
+						async: true,
+						error: function(jqXHR, textStatus, errorThrown) {
+							if (jqXHR.status == 500){
+							noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+							};
+						},
+						success : function (data) {
+							layer.msg('注册成功,跳转中......', {time: 3000})
+							setTimeout(function(){
+									location.href="/list/listblog/?type=all"},3000);
+							},
+					});
+                }
+            },
+            {
+                addClass: 'btn btn-danger btn-clean',
+                text: '取消',
+                onClick: function($noty) {
+                    $noty.close();
+                }
+            }
+        ]
+    });
+});
+</script> 
+<script type="text/javascript">
+//重置
+var btnforget = document.querySelector("#btnforget");
+btnforget.addEventListener('click', function(event) {
+    event.preventDefault();
+		$.ajax({
+			cache: true,
+			type : 'POST',
+			url : 'forget_post', 
+			data: $('#forgetForm').serialize(),
+			async: false,
+			error: function(jqXHR, textStatus, errorThrown) {
+				if (jqXHR.status == 500){
+				noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+				};
+			},
+			success : function (data) {
+				layer.msg(data, {time: 3000})
+				//location.href = "index";
+				setTimeout(function(){
+						location.href="login"},3000);			
+			},
+		});
+    });
+</script>		
+		{% endblock %}
+{% block static %}
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/jquery.noty.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/layouts/topCenter.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/layouts/center.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/themes/default.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js'%}"></script> 
+{% endblock %} 
+ 
+    </body>
+</html>
+
+
+
+
+
+

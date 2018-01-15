@@ -1,0 +1,73 @@
+{% load staticfiles %} 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />     
+<link rel="icon" href="{% static 'favicon.ico'%}" type="image/x-icon" />    
+<link href="{% static 'css/theme-default.css'%}" rel="stylesheet" type="text/css" />		
+    <div class="search-results" id="result">
+	{%if not keyword %}
+	{% else %}
+	{% for i in blog %}
+        <div class="sr-item">
+            <a href="/list/blog&id={{ i.id }}" class="sr-item-title">{{ i.title }}</a>
+            <div class="sr-item-link">http://themifycloud.com/downloads/free-responsive-bootstrap-joli-angular-js-admin-template-dashboard-web-app/</div>
+            <p>{{ i.content|truncatechars_html:100|safe }}</p>
+            <p class="sr-item-links"><a href="/list/blog&id={{ i.id }}">link to this page</a> -- <a href="#">author：{{i.author}}</a> -- <a href="#">create at {{i.created}}</a></p>
+        </div>
+	{% empty %}
+		<div class="page-content-wrap">	
+			<div class="row">
+				<div class="col-md-12">	
+					<div class="error-container">
+						<div class="error-text"><span class="fa fa-warning"></span>    Sorry,没有您想要的内容!</div>
+					</div>	
+				</div>
+			</div>																	
+		</div> 
+    {% endfor %}
+	{% endif %}                             
+    </div>
+    <ul class="pagination pagination-sm pull-right push-down-20" id="pager">
+        {% if blog.has_previous %}
+            {% ifequal type 'content' %}
+            <li class="previous"><a href="/list/search?keyword={{keyword}}&type=content&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'title' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=title&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'catagory' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=catagory&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'tag' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=tag&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'author' %}
+			<li class="previous"><a href="/list/search?keyword={{keyword}}&type=author&page={{ blog.previous_page_number }}">上一页</a></li>
+			{% endifequal %}
+        {% else %}
+            <li class="previous disabled"><a href="#">上一页</a></li>
+        {% endif %}
+        {% if blog.has_next %}
+			{% ifequal type 'content' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=content&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'title' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=title&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'catagory' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=catagory&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'tag' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=tag&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+			{% ifequal type 'author' %}
+            <li class="next"><a href="/list/search?keyword={{keyword}}&type=author&page={{ blog.next_page_number }}">下一页</a></li>
+			{% endifequal %}
+        {% else %}
+            <li class="next disabled"><a href="#">下一页</a></li>
+        {% endif %}
+    </ul> 
+
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js'%}"></script>

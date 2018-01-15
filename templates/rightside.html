@@ -1,0 +1,49 @@
+<div class="col-md-3">
+    <div class="panel panel-default">
+        <div class="panel-body">
+		{% if username %}
+            <h3>欢迎</h3>
+            <div class="contact-info">
+                <p>{{userinfo.nickname}}</p>                               
+            </div>
+        </div>
+		{%else%}
+			<span class='label label-danger'><span class="fa fa-warning"></span>暂未登录</span>
+			<a href="/blog/login" <span class='label label-danger'>登录</span></a>
+		{% endif %}
+    </div>
+	
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>分类</h3>
+            <div class="links">
+				{% for category in category_list %}
+				<a href="/list/listblog/?type=category&category={{category.name}}">{{ category.name }}<span class="label label-info">{{ category.num_posts }}</span></a>
+				{% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>最近</h3>
+            <div class="links small">
+				{% for i in blog %}
+				<a href="/list/blog&id={{i.id}}">{{ i.title }} by {{ i.author}}</a>
+				{% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>标签</h3>
+            <ul class="list-tags push-up-10">
+				{% for i in tag %}
+				<li><a href="/list/listblog/?type=tag&tag={{ i.name }}"><span class="fa fa-tag"></span> {{ i.name }}</a></li>	
+				{% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,58 @@
+{% extends 'nav.html' %}
+{% load staticfiles %} 
+{% block title %}
+<title>查看博客</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="/list/listblog/?type=all">主页</a></li>
+<li class="active">查看博客</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-9">            
+            <div class="panel panel-default">
+                <div class="panel-body posts">                    
+                    <div class="post-item">
+                        <div class="post-title">
+                            {{ myblog.title }}
+                        </div>
+                        <div class="post-date"><span class="fa fa-calendar"></span> {{ myblog.created }} / <a href="pages-blog-post.html#comments">3 Comments</a> / <a href="pages-profile.html">by {{ myblog.author }}</a></div>
+                        <div class="post-text">                                            
+                            <p>{{ myblog.content|safe }}</p>
+                        </div>
+                        <div class="post-row">
+                            <div class="post-info">
+                                <span class="fa fa-thumbs-up"></span> 15 - <span class="fa fa-eye"></span> 15,332 - <span class="fa fa-star"></span> 322                                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-item">
+                        <div class="post-title">
+                            发表评论
+                        </div>                       
+							<form action="/list/blog&id={{blogid}}" method="post">
+								<p>{{ obj.content }}</span></p>
+								<span class="help-block">评论长度不超过150个字</span>
+								<input type="submit" class="btn btn-primary pull-right" value="评论"/>
+							</form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="post-item">			
+                    <h3 class="push-down-20">评论区</h3>
+					<iframe src="/list/comments&id={{blogid}}&page=1"  width="800" height="1000" frameborder="0"  ></iframe>
+				</div>
+			</div>
+                     
+        </div> 
+			{% include "rightside.html" %}
+    </div>                                                           
+</div> 
+
+{% endblock%}
+

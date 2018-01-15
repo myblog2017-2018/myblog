@@ -1,0 +1,109 @@
+{% extends 'base_login.html' %}
+{% load staticfiles %}  
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+    <head>        
+        {% block title %}<title>密码找回</title>{% endblock %}   
+    </head>
+    <body>
+{% block forget_reset %}
+<div class="login-container">        
+    <div class="login-box animated fadeInDown">
+        <div class="login-body">
+            <div class="login-title"><strong>重置密码</strong></div>
+            <form id="resetForm" class="form-horizontal"  accept-charset="UTF-8" method="POST">
+            <div class="form-group">
+                <div class="col-md-12">
+					<input type="text" name="username" class="form-control" placeholder="Username"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="password1" name="password1" class="form-control" placeholder="新密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="password2" name="password2" class="form-control" placeholder="确认新密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button id="reset_button" class="btn btn-info pull-right">重置</button>
+                </div>
+            </div>
+            </form>
+        </div>
+		{% include "foot.html" %}
+    </div>
+    
+</div>		
+{% endblock %}
+{% block javascript %}
+
+<script type="text/javascript">
+//注册
+var url = window.location.href;
+var md5 = url.split("/")[5].split("&")[0];
+var reset_button = document.querySelector("#reset_button");
+reset_button.addEventListener('click', function(event) {
+    event.preventDefault();
+    noty({
+        text: '确定提交?',
+        layout: 'center',
+            buttons: [
+            {
+                addClass: 'btn btn-success btn-clean',
+                text: '确定',
+                onClick: function($noty) {
+					$noty.close();
+					$.ajax({
+						cache: true,
+						type : 'POST',
+						url : 'reset_post',
+						data : $('#resetForm').serialize()+'&test='+md5,
+						async: true,
+						error: function(jqXHR, textStatus, errorThrown) {
+							if (jqXHR.status == 500){
+							noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+							};
+						},
+						success : function (data) {
+							layer.msg('重置成功,跳转中......', {time: 3000})
+							setTimeout(function(){
+									location.href="/blog/login"},3000);
+							},
+					});
+                }
+            },
+            {
+                addClass: 'btn btn-danger btn-clean',
+                text: '取消',
+                onClick: function($noty) {
+                    $noty.close();
+                }
+            }
+        ]
+    });
+});
+</script> 
+
+{% endblock %}
+{% block static %}
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/jquery.noty.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/layouts/topCenter.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/layouts/center.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/noty/themes/default.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js'%}"></script> 
+{% endblock %} 
+</body>
+</html>
+
+
+
+
+
+

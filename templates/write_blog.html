@@ -1,0 +1,147 @@
+{% extends 'nav.html' %}
+{% load staticfiles %} 
+{% block title %}
+<title>创建博客</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="#">主页</a></li>
+<li class="active">创建博客</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            
+            <form class="form-horizontal" id="myForm" accept-charset="UTF-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>创建</strong> 博客</h3>
+                </div>
+                <div class="panel-body">
+                    <li><a href="/list/myblog">个人主页</a>|<a href="/list/myblog">我的博客</a></li>
+                </div>
+                <div class="panel-body">                                                                                            
+                    <div class="row">                       
+                        <div class="col-md-12">                          
+                            <div class="form-group">
+                                <label class="col-md-12 col-xs-12">标题</label>
+                                <div class="col-md-6">                                            
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                        <input type="text" id="title" name="title" class="form-control"/>
+                                    </div>                                            
+                                </div>
+                            </div>                                                    
+                            <div class="form-group">
+                                <label class="col-md-12 col-xs-12">正文</label>
+                                <div class="col-md-12 col-xs-12">
+									<textarea id="editor" name="editor" placeholder="博客正文" autofocus ></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12 col-xs-12">可以添加多个标签，你的内容能被更多人看到(回车增加)</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="tag" name="tag" class="tagsinput" value=""/>
+                                </div>
+                            </div>                          
+                            <div class="form-group">
+                                <label class="col-md-12 col-xs-12">分类</label>
+                                <div class="col-md-9">       
+									{% for i in catagory1 %}
+									<label class="check"><input type="radio" class="iradio" name="catagory" value="{{i}}"/>{{i}}</label>
+									{% endfor%}
+                                </div>
+                            </div>                            
+                        </div>                        
+                    </div>
+
+                </div>
+                <div class="panel-footer">                                   
+                    <button id="create" class="btn btn-primary pull-right">发表文章</button>
+                </div>
+            </div>
+            </form>           
+        </div>
+    </div>                                                           
+</div> 
+{% endblock%}
+
+{% block javascript %}
+		<script type="text/javascript" src="{% static 'simditor/module.js'%}"></script> 
+		<script type="text/javascript" src="{% static 'simditor/hotkeys.js'%}"></script> 
+		<script type="text/javascript" src="{% static 'simditor/simditor.js'%}"></script>
+		<script type="text/javascript" src="{% static 'js/plugins/tagsinput/jquery.tagsinput.min.js'%}"></script>
+
+		<script type="text/javascript">
+			var editor = new Simditor({
+			textarea: $('#editor'),
+			
+				toolbar:[
+			'title',
+			'bold',
+			'italic',
+			'underline',
+			'strikethrough',
+			'fontScale',
+			'color',
+			'ol',            
+			'ul',            
+			'blockquote',
+			'code' ,         
+			'table',
+			'link',
+			//'image',
+			'hr' ,           
+			'indent',
+			'outdent',
+			'alignment',
+			],
+			
+			});
+		</script>
+		<script type="text/javascript">
+		//每局统计
+		var create = document.querySelector("#create");
+		create.addEventListener('click', function(event) {
+			event.preventDefault();
+			noty({
+				text: '确定继续?',
+				layout: 'center',
+					buttons: [
+					{
+						addClass: 'btn btn-success btn-clean',
+						text: '确定',
+						onClick: function($noty) {
+							$noty.close();
+								$.ajax({
+									cache: true,
+									type : 'POST',
+									url : 'n_blog', 
+									data: $('#myForm').serialize(),
+									async: false,
+									error: function(jqXHR, textStatus, errorThrown) {
+										if (jqXHR.status == 500){
+										noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+										};
+									},
+									success : function (data) {
+										layer.alert('发表成功', {icon: 6});
+									},
+							});
+						}
+					},
+					{
+						addClass: 'btn btn-danger btn-clean',
+						text: '取消',
+						onClick: function($noty) {
+							$noty.close();
+							//noty({text: '用户已取消', layout: 'topCenter', type: 'error'});
+						}
+					}
+				]
+			});
+		});
+		</script>
+{% endblock %}

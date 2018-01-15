@@ -1,0 +1,93 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render,render_to_response
+from login.models import *
+from django import forms
+from django.http import HttpResponse,HttpResponseServerError,HttpResponseRedirect
+import re
+# Create your views here.
+
+def login(request):
+    return render(request,'login.html',locals())
+
+def index(request):
+    username = request.COOKIES.get('username', '')
+    password = request.COOKIES.get('password', '')
+    request.session["username"] = username
+    request.session['password'] = password
+
+    sss = request.session.get("username", "")
+    bbb = request.session.get("password", "")
+    if username:
+        return render(request, 'index.html', locals())
+    else:
+        return HttpResponseRedirect('login')
+def login_post(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            assert all([username,password])
+        except:
+            return HttpResponseServerError("请输入用户密码")
+        try:
+            user = User.objects.values('username').filter(username=username)[0]['username']
+            pwd = User.objects.values('password').filter(username=username)[0]['password']
+        except:
+            return HttpResponseServerError("账号不存在")
+
+        if password != pwd:
+            return HttpResponseServerError("密码不正确")
+
+        response = HttpResponseRedirect('index')
+        response.set_cookie('username',username,3600)
+        response.set_cookie('password',password, 3600)
+        return response
+    #return render(request,'index.html',locals())
+
+def regist_post(request):
+    if request.method == 'POST':
+        q = request.POST
+        username,password,password1,email = q['username'],q['password'],q['password1'],q['email']
+        try:
+            assert all([username,password,password1,email,password == password1])
+        except:
+            return HttpResponseServerError("字段必填&密码需要匹配")
+        try:
+            User.objects.values('username').filter(username=username)[0]['username']
+            return HttpResponseServerError("用户名已注册")
+        except:
+            pass
+        try:
+            User.objects.values('email').filter(email=email)[0]['email']
+            return HttpResponseServerError("邮箱已注册")
+        except:
+            pass
+    str = r'^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}$'
+    if not re.match(str, email):
+        return HttpResponseServerError("邮箱格式错误")
+    try:
+        sql = User(username=username,password=password,email=email)
+        sql.save()
+        response = HttpResponseRedirect('index')
+        response.set_cookie('username', username, 3600)
+        response.set_cookie('password', password, 3600)
+        return response
+    except:
+        return HttpResponseServerError('内部错误')
+
+def forget_post(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        str = r'^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+){0,4}$'
+        if not re.match(str,email):
+            return HttpResponseServerError("邮箱格式错误")
+        if not username or not email:
+            return HttpResponseServerError('必填项')
+        try:
+            User.objects.values('email').filter(email=email)[0]['email']
+        except:
+            return HttpResponseServerError("邮箱未注册")
+    return HttpResponse("邮件已发送，请登录邮箱重置密码")

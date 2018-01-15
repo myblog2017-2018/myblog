@@ -1,0 +1,97 @@
+{% extends 'nav.html' %}
+{% load staticfiles %} 
+{% block title %}
+<title>查看博客</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="/list/listblog/?type=all">主页</a></li>
+<li class="active">我的博客</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-9">            
+            <div class="panel panel-default">
+                <div class="panel-body posts">                    
+                    <div class="row">
+					{% if blog %}
+					{% for i in blog %}
+                        <div class="col-md-6">                            
+                            <div class="post-item">
+                                <div class="post-title">
+                                    <a href="/list/blog&id={{i.id}}">{{i.title}}</a>
+                                </div>
+                                <div class="post-date"><span class="fa fa-calendar"></span>{{i.created}} / <a href="pages-blog-post.html#comments">3 Comments</a> / <a href="pages-profile.html">by {{i.author}}</a></div>
+                                <div class="post-text">
+                                    <p>{{ i.content|truncatechars_html:100|safe }}</p>                                            
+                                </div>
+                                <div class="post-row">
+                                    <div class="post-info">
+                                        <span class="fa fa-thumbs-up"></span> 15 - <span class="fa fa-eye"></span> 15,332 - <span class="fa fa-star"></span> 322
+                                    </div>
+									<button onclick="window.location.href='/list/myblog?action=edit&id={{i.id}}'" class="btn btn-warning btn-rounded pull-right">编辑</button>
+									<button onclick="window.location.href='/list/myblog?action=dele&id={{i.id}}'" class="btn btn-danger btn-rounded pull-right">删除</button>
+                                    <button onclick="window.location.href='/list/blog&id={{i.id}}'" class="btn btn-default btn-rounded pull-right">详情</button>
+                                </div>
+                            </div>                                                                       
+                        </div>
+					{% endfor %}
+					{% else %}
+					暂无博客
+					{% endif %}
+                    </div>                                                                                                        
+                </div>
+            </div>           
+        </div> 
+			{% include "rightside.html" %}
+    </div>                                                           
+</div> 
+{% endblock%}
+
+{% block javascript %}
+		<script type="text/javascript">
+		//每局统计
+		var create = document.querySelector("#create");
+		create.addEventListener('click', function(event) {
+			event.preventDefault();
+			noty({
+				text: '确定继续?',
+				layout: 'center',
+					buttons: [
+					{
+						addClass: 'btn btn-success btn-clean',
+						text: '确定',
+						onClick: function($noty) {
+							$noty.close();
+								$.ajax({
+									cache: true,
+									type : 'POST',
+									url : 'n_blog', 
+									data: $('#myForm').serialize(),
+									async: false,
+									error: function(jqXHR, textStatus, errorThrown) {
+										if (jqXHR.status == 500){
+										noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+										};
+									},
+									success : function (data) {
+										layer.alert('发表成功', {icon: 6});
+									},
+							});
+						}
+					},
+					{
+						addClass: 'btn btn-danger btn-clean',
+						text: '取消',
+						onClick: function($noty) {
+							$noty.close();
+							//noty({text: '用户已取消', layout: 'topCenter', type: 'error'});
+						}
+					}
+				]
+			});
+		});
+		</script>
+{% endblock %}

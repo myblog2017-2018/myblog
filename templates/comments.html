@@ -1,0 +1,59 @@
+{% load staticfiles %} 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />     
+<link rel="icon" href="{% static 'favicon.ico'%}" type="image/x-icon" />    
+<link href="{% static 'css/theme-default.css'%}" rel="stylesheet" type="text/css" />		
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-9">            
+            <div class="panel panel-default">
+				<ul class="media-list">
+				
+					{% for i in comments %}
+					<li class="media">
+						<div class="media-body">
+							<h4 class="media-heading"><strong>{{ i.name }}</strong></h4>
+							<p>{{ i.content|linebreaks }}</p>
+							<p class="text-muted">{{ i.created}}</p>                                                                                       
+						</div>
+					</li>
+					{% empty %}
+					<li class="media">
+						<div class="media-body">
+						暂无评论
+						</div> 
+					</li>
+					{% endfor %}
+				
+				
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<ul class="pagination pagination-sm pull-right push-down-20" id="pager">
+
+	{% if comments.has_previous %}
+		<li class="previous"><a href="/list/comments&id={{blogid}}&page={{ comments.previous_page_number }}">上一页</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">上一页</a></li>
+	{% endif %}
+	{% for num in paginator.page_range %}
+		{% if num == currentPage %}
+			<li class="active"><a href="/list/comments&id={{blogid}}&page={{ num }}">{{ num }}</a></li>
+		{% else %}
+			<li><a href="/list/comments&id={{blogid}}&page={{ num }}">{{ num }}</a></li>
+		{% endif %}
+	{% endfor %}
+	{% if comments.has_next %}
+		<li class="next"><a href="/list/comments&id={{blogid}}&page={{ comments.next_page_number }}">下一页</a></li>
+	{% else %}
+		<li class="disabled"><a href="#">下一页</a></li>
+	{% endif %}
+	
+</ul>
+
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/jquery/jquery-ui.min.js'%}"></script>  
+<script type="text/javascript" src="{% static 'js/plugins/bootstrap/bootstrap.min.js'%}"></script>
