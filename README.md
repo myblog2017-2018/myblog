@@ -17,12 +17,21 @@ python manage.py runserver 0.0.0.0:80<br>
 [功能]<br>
 
 1 - 全文搜素，标题搜素，作者搜索，标签搜索，分类搜索，搜索关键字颜色差异<br>
+
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/search.png)<br>
+
 2 - markdown风格编辑器，可插入代码,图片<br>
+
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/edit.png)<br>
+
 3 - 在线编辑文章内容<br>
+
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/onlinedit.png)<br>
+
 4 - 在线预览<br>
+
 5 - 用户评论、回复<br>
+
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/comment.png)<br>
+
 5 - 内容分页<br>
