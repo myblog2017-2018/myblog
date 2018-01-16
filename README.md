@@ -1,4 +1,8 @@
-#开源博客系统<br> 
+开源博客系统<br> 
+
+[演示地址]<br>
+
+http://182.254.146.59/blog/login<br>
 
 [关于]<br>
 Django版本:Django (1.11.7)<br>
