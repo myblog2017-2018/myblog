@@ -19,7 +19,6 @@ python manage.py runserver 0.0.0.0:80<br>
 1 - 全文搜素，标题搜素，作者搜索，标签搜索，分类搜索，搜索关键字颜色差异<br>
 
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/search.png)<br>
-
 2 - markdown风格编辑器，可插入代码,图片<br>
 
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/edit.png)<br>
