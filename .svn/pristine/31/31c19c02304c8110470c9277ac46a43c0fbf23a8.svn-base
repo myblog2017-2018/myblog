@@ -1,0 +1,139 @@
+{% extends 'nav.html' %}
+{% load staticfiles %} 
+{% block title %}
+<title>个人中心</title>
+{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="/list/listblog/?type=all">主页</a></li>
+<li class="active">个人中心</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-content-wrap">
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <form class="form-horizontal" accept-charset="UTF-8" method="POST" id="myForm">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+					<span class='label label-danger'><span class="fa fa-warning"></span>修改用户信息</span>
+                    <ul class="panel-controls">
+                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <p></p>
+                </div>
+                <div class="panel-body">                                                                        
+                    
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-12 control-label">用户</label>
+                        <div class="col-md-6 col-xs-12">                                            
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                                <input type="text" id="username" name="username" readonly="readonly" value="{{userinfo.username}}" class="form-control"/>
+                            </div>                                            
+                            <span class="help-block">用户名不可修改</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">                                        
+                        <label class="col-md-3 col-xs-12 control-label">密码</label>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-unlock-alt"></span></span>
+                                <input type="password" id="password1" name="password1" class="form-control"/>
+                            </div>            
+                            <span class="help-block">输入旧密码</span>
+                        </div>
+                    </div>
+                    <div class="form-group">                                        
+                        <label class="col-md-3 col-xs-12 control-label">新密码</label>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-unlock-alt"></span></span>
+                                <input type="password" id="password2" name="password2" class="form-control"/>
+                            </div>            
+                            <span class="help-block">确认新密码</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-12 control-label">昵称</label>
+                        <div class="col-md-6 col-xs-12">                                            
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fa fa-user"></span></span>
+                                <input type="text" id="nickname" name="nickname" value="{{userinfo.nickname}}" class="form-control"/>
+                            </div>                                            
+                            <span class="help-block">修改昵称</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-12 control-label">邮箱</label>
+                        <div class="col-md-6 col-xs-12">
+                            <div class="input-group">
+								<span class="input-group-addon"><span class="fa fa-file-text"></span></span>
+								<input type="text" id="email" name="email" class="form-control" value="{{userinfo.email}}"/>
+							</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">                                   
+                    <button id="edituser" class="btn btn-danger pull-right">修改信息</button>
+                </div>
+            </div>
+            </form>
+            
+        </div>
+    </div>                    
+    
+</div>
+{% endblock%}
+
+{% block javascript %}
+<script type="text/javascript">
+//var ID = window.location.href.split("=")[2];
+var edituser = document.querySelector("#edituser");
+edituser.addEventListener('click', function(event) {
+	event.preventDefault();
+	noty({
+		text: '确定继续?',
+		layout: 'center',
+			buttons: [
+			{
+				addClass: 'btn btn-success btn-clean',
+				text: '确定',
+				onClick: function($noty) {
+					$noty.close();
+						$.ajax({
+							cache: true,
+							type : 'POST',
+							url : '/list/edituser', 
+							data: $('#myForm').serialize(),
+							async: false,
+							error: function(jqXHR, textStatus, errorThrown) {
+								if (jqXHR.status == 500){
+								noty({text: jqXHR.responseText, layout: 'topCenter', type: 'error'});
+								};
+							},
+							success : function (data) {
+								layer.msg('修改成功,跳转中......', {time: 3000})
+								setTimeout(function(){
+								location.href="/list/userinfo"},3000);
+							},
+					});
+				}
+			},
+			{
+				addClass: 'btn btn-danger btn-clean',
+				text: '取消',
+				onClick: function($noty) {
+					$noty.close();
+				}
+			}
+		]
+	});
+});
+</script>
+{% endblock %}
