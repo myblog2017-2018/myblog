@@ -111,7 +111,7 @@ def forget_post(request):
         send_mail(
             '博客密码找回邮件',
             'http://182.254.146.59/blog/forget_reset/%s&%s'%(u,e),
-            'nicefuture@foxmail.com',
+            'xxxxx.com',
             [email],
             fail_silently=True
         )
