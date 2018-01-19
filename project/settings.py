@@ -140,9 +140,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nicefuture@foxmail.com'
-EMAIL_HOST_PASSWORD = 'whewtprpxyqucagg'
-DEFAULT_FROM_EMAIL = 'blog<nicefuture@foxmail.com>'
+EMAIL_HOST_USER = 'xxxxxxxxx.com'
+EMAIL_HOST_PASSWORD = 'xxxxxxxxxxxx'
+DEFAULT_FROM_EMAIL = 'blog<xxxxx@xxxx.com>'
 
 #print STATIC_ROOT
 #TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
