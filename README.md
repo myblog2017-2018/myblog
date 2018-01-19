@@ -30,4 +30,7 @@ python manage.py runserver 0.0.0.0:80<br>
 5 - 用户评论、回复<br>
 	![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/comment.png)<br>
 
-5 - 内容分页<br>
+6 - 内容分页<br>
+
+7 - 插入图片<br>
+        ![Alt text](https://github.com/myblog2017-2018/myblog/blob/master/screenshots/blog.png)<br>
